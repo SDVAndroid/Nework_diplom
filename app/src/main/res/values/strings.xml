@@ -70,4 +70,6 @@
     <string name="task_cancelled">Task cancelled</string>
     <string name="passwords_don_t_match">Passwords don\'t match</string>
     <string name="looking_for_a_job">looking for a job</string>
+    <string name="user_wall">User wall</string>
+    <string name="new_job">New job</string>
 </resources>

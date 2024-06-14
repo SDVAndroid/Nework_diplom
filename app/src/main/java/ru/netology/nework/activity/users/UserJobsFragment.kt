@@ -17,10 +17,12 @@ import ru.netology.nework.dto.Job
 import ru.netology.nework.viewmodel.JobViewModel
 import ru.netology.nework.viewmodel.UserViewModel
 import javax.inject.Inject
+
 @AndroidEntryPoint
 class UserJobsFragment : Fragment() {
 
     private val userViewModel: UserViewModel by viewModels(ownerProducer = ::requireActivity)
+
     @Inject
     lateinit var factory: JobViewModel.Factory
 
@@ -29,15 +31,8 @@ class UserJobsFragment : Fragment() {
             factory,
             userViewModel.selectedUser.value!!
         )
-            //JobRepositoryImpl(userViewModel.selectedUser.value!!, )
-            //jobRepositoryFactory.create(userViewModel.selectedUser.value!!)
     }
-    /*private val jobViewModel: JobViewModel by viewModels(){
-        JobViewModel.JobViewModelFactory(
-            requireActivity().application,
-            userViewModel.selectedUser.value!!
-        )
-    }*/
+
     private lateinit var binding: FragmentUserJobsBinding
 
     override fun onCreateView(
@@ -45,7 +40,7 @@ class UserJobsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentUserJobsBinding.inflate(layoutInflater, container, false)
-        userViewModel.selectedUser.observe(viewLifecycleOwner) {user ->
+        userViewModel.selectedUser.observe(viewLifecycleOwner) { user ->
             jobViewModel.loadJobs()
         }
         val adapter = JobAdapter(object : OnInteractionListener {
@@ -53,7 +48,6 @@ class UserJobsFragment : Fragment() {
             override fun onJobDelete(job: Job) {
                 jobViewModel.removeById(job)
             }
-
         })
 
         binding.list.adapter = adapter
@@ -72,9 +66,9 @@ class UserJobsFragment : Fragment() {
                         jobViewModel.loadJobs()
                     }
                     .show()
+                jobViewModel.resetError()
             }
         }
-
 
         binding.swiperefresh.setOnRefreshListener {
             jobViewModel.loadJobs()
@@ -82,6 +76,4 @@ class UserJobsFragment : Fragment() {
         }
         return binding.root
     }
-
-
 }

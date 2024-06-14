@@ -16,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -52,7 +53,7 @@ class UserPostsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
+
         binding = FragmentUserPostsBinding.inflate(layoutInflater, container, false)
 
         val adapter = PostAdapter(object : OnInteractionListener {
@@ -96,8 +97,6 @@ class UserPostsFragment : Fragment() {
                 mediaObserver.playAudio(post.attachment!!, seekBar, playAudio)
                 postPlaying = post
             }
-
-
         }, requireContext(), auth.authenticated(), mediaObserver)
 
         binding.list.adapter = adapter
@@ -118,9 +117,15 @@ class UserPostsFragment : Fragment() {
             }
         }
 
+        wallViewModel.dataState.observe(viewLifecycleOwner){state ->
+            if (state.error) {
+                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG)
+                    .show()
+                wallViewModel.resetError()
+            }
+        }
+
         binding.swiperefresh.setOnRefreshListener(adapter::refresh)
         return binding.root
     }
-
-
 }

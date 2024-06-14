@@ -28,8 +28,8 @@ interface EventOnInteractionListener {
     fun onEdit(event: Event) {}
     fun onRemove(event: Event) {}
     fun onShare(event: Event) {}
-    fun onItemClick (event: Event) {}
-    fun onPlayAudio (event: Event, seekBar: SeekBar, playAudio: ImageButton) {}
+    fun onItemClick(event: Event) {}
+    fun onPlayAudio(event: Event, seekBar: SeekBar, playAudio: ImageButton) {}
 }
 
 class EventAdapter {
@@ -39,8 +39,7 @@ class EventAdapter {
         context: Context,
         private val authenticated: Boolean,
         private val mediaLifecycleObserver: MediaLifecycleObserver
-    ): PagingDataAdapter<Event, EventAdapter.EventViewHolder>(EventDiffCallback()) {
-
+    ) : PagingDataAdapter<Event, EventAdapter.EventViewHolder>(EventDiffCallback()) {
 
         private val context: Context
         var previousPosition = -1
@@ -64,13 +63,12 @@ class EventAdapter {
             }
         }
 
-
         inner class EventViewHolder(
             private val binding: CardEventBinding,
             private val onInteractionListener: EventOnInteractionListener,
         ) : RecyclerView.ViewHolder(binding.root) {
 
-            fun bind(event: Event, position: Int){
+            fun bind(event: Event, position: Int) {
                 binding.apply {
                     author.text = event.author
                     Glide.with(avatar)
@@ -82,22 +80,20 @@ class EventAdapter {
                         .into(binding.avatar)
                     published.text = dateUTCToText(event.published, context)
                     eventType.text =
-                        when(event.type){
+                        when (event.type) {
                             EventType.OFFLINE -> context.getString(R.string.offline)
                             EventType.ONLINE -> context.getString(R.string.online)
                         }
                     datetime.text = dateUTCToText(event.datetime, context)
                     content.text = event.content
-                    // в адаптере
                     like.isChecked = event.likedByMe
                     like.text = event.likes.toString()//"${post.likes()}"
                     participants.isChecked = event.participatedByMe
                     participants.text = event.participants.toString()//"${post.likes()}"
-                    if(event.link != null){
+                    if (event.link != null) {
                         link.isVisible = true
                         link.text = event.link
-                    }
-                    else{
+                    } else {
                         link.isVisible = false
                     }
                     imageAttachment.isVisible = false
@@ -109,11 +105,9 @@ class EventAdapter {
                     videoAttachment.videoView.setVideoURI(null)
                     videoAttachment.videoView.stopPlayback()
                     audioAttachment.seekBar.progress = 0
-                    //вложение
 
-                    if(event.attachment != null) {
+                    if (event.attachment != null) {
                         when (event.attachment.type) {
-                            //изображение
                             AttachmentType.IMAGE -> {
                                 imageAttachment.isVisible = true
                                 audioAttachment.audioAttachmentNested.isVisible = false
@@ -126,7 +120,7 @@ class EventAdapter {
                                     .centerCrop()
                                     .into(binding.imageAttachment)
                             }
-                            //видео
+
                             AttachmentType.VIDEO -> {
                                 audioAttachment.audioAttachmentNested.isVisible = false
                                 imageAttachment.isVisible = false
@@ -136,12 +130,27 @@ class EventAdapter {
                                     .centerCrop()
                                     .into(binding.videoAttachment.videoThumb)
                             }
-                            //аудио
+
                             AttachmentType.AUDIO -> {
                                 audioAttachment.audioAttachmentNested.isVisible = true
                                 imageAttachment.isVisible = false
                                 videoAttachment.videoAttachmentNested.isVisible = false
-                                audioAttachment.seekBar.progress = event.attachment.progress
+                                if (position != previousPosition) {
+                                    audioAttachment.playAudio.setBackgroundResource(R.drawable.play_48)
+                                    audioAttachment.seekBar.progress = 0
+                                    audioAttachment.seekBar.removeCallbacks(mediaLifecycleObserver.runnable)
+                                    audioAttachment.playAudio.setBackgroundResource(R.drawable.play_48)
+                                } else {
+                                    audioAttachment.seekBar.max =
+                                        mediaLifecycleObserver.mediaPlayer!!.duration
+                                    audioAttachment.seekBar.progress =
+                                        mediaLifecycleObserver.mediaPlayer!!.currentPosition
+                                    audioAttachment.seekBar.postDelayed(
+                                        mediaLifecycleObserver.runnable,
+                                        1000
+                                    )
+                                    audioAttachment.playAudio.setBackgroundResource(R.drawable.pause_48)
+                                }
                             }
                         }
                     }
@@ -151,7 +160,7 @@ class EventAdapter {
                         videoAttachment.videoView.apply {
                             setMediaController(MediaController(context))
                             setVideoURI(Uri.parse(event.attachment?.url))
-                            setOnPreparedListener{
+                            setOnPreparedListener {
                                 videoAttachment.videoThumb.isVisible = false
                                 videoAttachment.playVideo.isVisible = false
                                 start()
@@ -164,9 +173,14 @@ class EventAdapter {
                             }
                         }
                     }
+
                     audioAttachment.playAudio.setOnClickListener {
-                        if(previousPosition == -1){
-                            mediaLifecycleObserver.playAudio(event.attachment!!, audioAttachment.seekBar, audioAttachment.playAudio)
+                        if (previousPosition == -1) {
+                            mediaLifecycleObserver.playAudio(
+                                event.attachment!!,
+                                audioAttachment.seekBar,
+                                audioAttachment.playAudio
+                            )
                         } else {
                             if (position == previousPosition) {
                                 mediaLifecycleObserver.playAudio(
@@ -205,6 +219,7 @@ class EventAdapter {
                                         onInteractionListener.onRemove(event)
                                         true
                                     }
+
                                     R.id.edit -> {
                                         onInteractionListener.onEdit(event)
                                         true
@@ -218,7 +233,7 @@ class EventAdapter {
 
                     like.setOnClickListener {
                         onInteractionListener.onLike(event)
-                        if(!authenticated) {
+                        if (!authenticated) {
                             notifyItemChanged(position)
                         }
                     }
@@ -233,16 +248,14 @@ class EventAdapter {
 
                     participants.setOnClickListener {
                         onInteractionListener.onParticipate(event)
-                        if(!authenticated) {
+                        if (!authenticated) {
                             notifyItemChanged(position)
                         }
                     }
                 }
             }
-
         }
     }
-
 
     class EventDiffCallback : DiffUtil.ItemCallback<Event>() {
         override fun areItemsTheSame(oldItem: Event, newItem: Event): Boolean {
@@ -252,6 +265,5 @@ class EventAdapter {
         override fun areContentsTheSame(oldItem: Event, newItem: Event): Boolean {
             return oldItem == newItem
         }
-
     }
 }

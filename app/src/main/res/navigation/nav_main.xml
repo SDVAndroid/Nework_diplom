@@ -7,7 +7,7 @@
         android:id="@+id/signInFragment"
         android:name="ru.netology.nework.activity.auth.SignInFragment"
         android:label="@string/login"
-        tools:layout="@layout/fragment_sign_in" >
+        tools:layout="@layout/fragment_sign_in">
         <action
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
@@ -17,9 +17,14 @@
         android:name="ru.netology.nework.activity.auth.SignUpFragment"
         android:label="@string/registration"
         tools:layout="@layout/fragment_sign_up" />
-    <action android:id="@+id/action_global_signInFragment" app:destination="@id/signInFragment"/>
-    <action android:id="@+id/action_global_signUpFragment" app:destination="@id/signUpFragment"/>
-    <navigation android:id="@+id/navigationPosts"
+    <action
+        android:id="@+id/action_global_signInFragment"
+        app:destination="@id/signInFragment" />
+    <action
+        android:id="@+id/action_global_signUpFragment"
+        app:destination="@id/signUpFragment" />
+    <navigation
+        android:id="@+id/navigationPosts"
         app:startDestination="@id/postsFragment">
         <fragment
             android:id="@+id/postsFragment"
@@ -44,10 +49,9 @@
             <!--suppress NavigationFile -->
             <argument
                 android:name="longArg"
-                app:argType="long"
-                android:defaultValue="-1L" />
-            <deepLink
-                app:uri="android-app://newPostFragment?longArg={longArg}" />
+                android:defaultValue="-1L"
+                app:argType="long" />
+            <deepLink app:uri="android-app://newPostFragment?longArg={longArg}" />
         </fragment>
         <fragment
             android:id="@+id/chooseUsersFragment"
@@ -67,10 +71,9 @@
             <!--suppress NavigationFile -->
             <argument
                 android:name="longArg"
-                app:argType="long"
-                android:defaultValue="-1L" />
-            <deepLink
-                app:uri="android-app://postDetailsFragment?longArg={longArg}" />
+                android:defaultValue="-1L"
+                app:argType="long" />
+            <deepLink app:uri="android-app://postDetailsFragment?longArg={longArg}" />
         </fragment>
         <fragment
             android:id="@+id/likersFragment"
@@ -82,20 +85,20 @@
             android:label="@string/mentioned"
             tools:layout="@layout/fragment_mentioned" />
     </navigation>
-    <navigation android:id="@+id/navigationUsers"
+    <navigation
+        android:id="@+id/navigationUsers"
         app:startDestination="@id/usersFragment">
         <fragment
             android:id="@+id/userWallFragment"
             android:name="ru.netology.nework.activity.users.UserWallFragment"
-            android:label="fragment_user_wall"
+            android:label="@string/user_wall"
             tools:layout="@layout/fragment_user_wall">
-        <!--suppress NavigationFile -->
+            <!--suppress NavigationFile -->
             <argument
-            android:name="longArg"
-            app:argType="long"
-            android:defaultValue="-1L" />
-        <deepLink
-            app:uri="android-app://userWallFragment?longArg={longArg}" />
+                android:name="longArg"
+                android:defaultValue="-1L"
+                app:argType="long" />
+            <deepLink app:uri="android-app://userWallFragment?longArg={longArg}" />
             <action
                 android:id="@+id/action_userWallFragment_to_newJobFragment"
                 app:destination="@id/newJobFragment" />
@@ -112,10 +115,11 @@
         <fragment
             android:id="@+id/newJobFragment"
             android:name="ru.netology.nework.activity.users.NewJobFragment"
-            android:label="fragment_new_job"
+            android:label="@string/new_job"
             tools:layout="@layout/fragment_new_job" />
     </navigation>
-    <navigation android:id="@+id/navigationEvents"
+    <navigation
+        android:id="@+id/navigationEvents"
         app:startDestination="@id/eventsFragment">
         <fragment
             android:id="@+id/eventsFragment"
@@ -133,7 +137,7 @@
             android:id="@+id/eventDetailsFragment"
             android:name="ru.netology.nework.activity.events.EventDetailsFragment"
             android:label="@string/event"
-            tools:layout="@layout/fragment_event_detail" >
+            tools:layout="@layout/fragment_event_detail">
             <action
                 android:id="@+id/action_eventDetailsFragment_to_likersFragment"
                 app:destination="@id/likersFragment" />
@@ -148,7 +152,7 @@
             android:id="@+id/newEventFragment"
             android:name="ru.netology.nework.activity.events.NewEventFragment"
             android:label="@string/new_event"
-            tools:layout="@layout/fragment_new_event" >
+            tools:layout="@layout/fragment_new_event">
             <action
                 android:id="@+id/action_newEventFragment_to_chooseSpeakersFragment"
                 app:destination="@id/chooseSpeakersFragment" />
@@ -160,11 +164,11 @@
         <fragment
             android:id="@+id/participantsFragment"
             android:name="ru.netology.nework.activity.events.ParticipantsFragment"
-            android:label="ParticipantsFragment" />
+            android:label="@string/participants" />
         <fragment
             android:id="@+id/speakersFragment"
             android:name="ru.netology.nework.activity.events.SpeakersFragment"
-            android:label="SpeakersFragment" />
+            android:label="@string/speakers" />
         <fragment
             android:id="@+id/chooseSpeakersFragment"
             android:name="ru.netology.nework.activity.events.ChooseSpeakersFragment"

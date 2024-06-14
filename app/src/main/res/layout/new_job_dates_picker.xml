@@ -1,125 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="328dp"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        >
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <TextView
             android:id="@+id/select_dates"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="@dimen/common_spacing"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:text="@string/select_date"
-            style="@style/MainText" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="@dimen/common_spacing"
-            app:layout_constraintTop_toBottomOf="@id/select_dates"
-            app:layout_constraintStart_toStartOf="parent"
-            android:text="@string/enter_dates"
             style="@style/MainText"
-            android:textSize="32sp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_spacing"
+            android:layout_marginTop="@dimen/common_spacing"
+            android:text="@string/select_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            style="@style/MainText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_spacing"
+            android:layout_marginTop="@dimen/common_spacing"
+            android:text="@string/enter_dates"
+            android:textSize="32sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/select_dates" />
+
         <ImageButton
             android:id="@+id/date_picker"
             android:layout_width="@dimen/icon_button_min_size"
             android:layout_height="@dimen/icon_button_min_size"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="@dimen/common_spacing"
             android:background="@drawable/icon_button"
+            android:contentDescription="@string/select_dates"
             app:layout_constraintBottom_toBottomOf="@id/header"
-            app:layout_constraintEnd_toEndOf="@id/header"
-            android:contentDescription="@string/select_dates" />
+            app:layout_constraintEnd_toEndOf="@id/header" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/dates"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintStart_toStartOf="parent"
-        android:baselineAligned="false">
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/common_spacing"
-        android:layout_marginStart="32dp"
-        app:helperTextEnabled="true"
-        app:helperText="@string/mm_dd_yyyy"
-        android:hint="@string/start_date"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_weight="100"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-    <!--app:endIconDrawable="@drawable/event"
-    app:endIconMode="custom"-->
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/date_start_input"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        style="@style/HeaderText" />
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@id/header">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/common_spacing"
-        android:layout_marginStart="@dimen/common_spacing"
-        android:layout_marginEnd="32dp"
-        app:helperTextEnabled="true"
-        app:helperText="@string/mm_dd_yyyy"
-        android:hint="@string/end_date"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_weight="100"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-        <!--app:endIconDrawable="@drawable/event"
-        app:endIconMode="custom"-->
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/date_end_input"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            style="@style/HeaderText" />
-    </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_spacing"
+            android:layout_marginTop="@dimen/common_spacing"
+            android:hint="@string/start_date"
+            app:helperText="@string/mm_dd_yyyy"
+            app:helperTextEnabled="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/date_start_input"
+                style="@style/HeaderText"
+                android:layout_width="134dp"
+                android:layout_height="56dp"
+                android:focusable="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/date_end_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_spacing"
+            android:layout_marginTop="@dimen/common_spacing"
+            android:layout_marginEnd="@dimen/common_spacing"
+            android:hint="@string/end_date"
+            app:helperText="@string/mm_dd_yyyy"
+            app:helperTextEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/date_end_input"
+                style="@style/HeaderText"
+                android:layout_width="134dp"
+                android:layout_height="56dp"
+                android:clickable="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/clear_finish"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="9dp"
+            android:background="@drawable/baseline_clear_24"
+            android:importantForAccessibility="no"
+            app:layout_constraintEnd_toEndOf="@id/date_end_layout"
+            app:layout_constraintTop_toTopOf="@id/date_end_layout" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/dates"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/common_spacing"
-        android:layout_marginEnd="32dp"
-        >
+        android:layout_marginEnd="@dimen/common_spacing"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dates">
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cancel"
+            style="@style/LikeCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/transparent"
-            style="@style/LikeCheckBox"
-            android:textAllCaps="false"
             android:text="@string/cancel"
-            />
+            android:textAllCaps="false" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/ok"
+            style="@style/LikeCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/transparent"
-            style="@style/LikeCheckBox"
-            android:text="@string/ok"
-            />
-
+            android:text="@string/ok" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
