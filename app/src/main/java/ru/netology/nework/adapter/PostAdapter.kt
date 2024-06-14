@@ -28,10 +28,10 @@ interface OnInteractionListener {
     fun onEdit(post: Post) {}
     fun onRemove(post: Post) {}
     fun onShare(post: Post) {}
-    fun onItemClick (post: Post) {}
-    fun onPlayAudio (post: Post, seekBar: SeekBar, playAudio: ImageButton) {}
-    fun onCheck(user: User, checked: Boolean){}
-    fun onUserClick (user: User) {}
+    fun onItemClick(post: Post) {}
+    fun onPlayAudio(post: Post, seekBar: SeekBar, playAudio: ImageButton) {}
+    fun onCheck(user: User, checked: Boolean) {}
+    fun onUserClick(user: User) {}
     fun onJobDelete(job: Job) {}
 }
 
@@ -40,7 +40,7 @@ class PostAdapter(
     context: Context,
     private val authenticated: Boolean,
     private val mediaLifecycleObserver: MediaLifecycleObserver
-): PagingDataAdapter<Post, PostAdapter.PostViewHolder>(PostDiffCallback()) {
+) : PagingDataAdapter<Post, PostAdapter.PostViewHolder>(PostDiffCallback()) {
 
 
     private val context: Context
@@ -71,7 +71,9 @@ class PostAdapter(
         private val onInteractionListener: OnInteractionListener,
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(post: Post, position: Int){
+        var seekBar = binding.audioAttachment.seekBar
+
+        fun bind(post: Post, position: Int) {
             binding.apply {
                 author.text = post.author
                 Glide.with(avatar)
@@ -86,11 +88,10 @@ class PostAdapter(
                 // в адаптере
                 like.isChecked = post.likedByMe
                 like.text = post.likes.toString()//"${post.likes()}"
-                if(post.link != null){
+                if (post.link != null) {
                     link.isVisible = true
                     link.text = post.link
-                }
-                else{
+                } else {
                     link.isVisible = false
                 }
                 imageAttachment.isVisible = false
@@ -104,7 +105,7 @@ class PostAdapter(
                 audioAttachment.seekBar.progress = 0
                 //вложение
 
-                if(post.attachment != null) {
+                if (post.attachment != null) {
                     when (post.attachment.type) {
                         //изображение
                         AttachmentType.IMAGE -> {
@@ -134,7 +135,22 @@ class PostAdapter(
                             audioAttachment.audioAttachmentNested.isVisible = true
                             imageAttachment.isVisible = false
                             videoAttachment.videoAttachmentNested.isVisible = false
-                            audioAttachment.seekBar.progress = post.attachment.progress
+                            if (position != previousPosition) {
+                                audioAttachment.playAudio.setBackgroundResource(R.drawable.play_48)
+                                audioAttachment.seekBar.progress = 0
+                                audioAttachment.seekBar.removeCallbacks(mediaLifecycleObserver.runnable)
+                                audioAttachment.playAudio.setBackgroundResource(R.drawable.play_48)
+                            } else {
+                                audioAttachment.seekBar.max =
+                                    mediaLifecycleObserver.mediaPlayer!!.duration
+                                audioAttachment.seekBar.progress =
+                                    mediaLifecycleObserver.mediaPlayer!!.currentPosition
+                                audioAttachment.seekBar.postDelayed(
+                                    mediaLifecycleObserver.runnable,
+                                    1000
+                                )
+                                audioAttachment.playAudio.setBackgroundResource(R.drawable.pause_48)
+                            }
                         }
                     }
                 }
@@ -144,7 +160,7 @@ class PostAdapter(
                     videoAttachment.videoView.apply {
                         setMediaController(MediaController(context))
                         setVideoURI(Uri.parse(post.attachment?.url))
-                        setOnPreparedListener{
+                        setOnPreparedListener {
                             videoAttachment.videoThumb.isVisible = false
                             videoAttachment.playVideo.isVisible = false
                             start()
@@ -157,9 +173,14 @@ class PostAdapter(
                         }
                     }
                 }
+
                 audioAttachment.playAudio.setOnClickListener {
-                    if(previousPosition == -1){
-                        mediaLifecycleObserver.playAudio(post.attachment!!, audioAttachment.seekBar, audioAttachment.playAudio)
+                    if (previousPosition == -1) {
+                        mediaLifecycleObserver.playAudio(
+                            post.attachment!!,
+                            audioAttachment.seekBar,
+                            audioAttachment.playAudio
+                        )
                     } else {
                         if (position == previousPosition) {
                             mediaLifecycleObserver.playAudio(
@@ -198,6 +219,7 @@ class PostAdapter(
                                     onInteractionListener.onRemove(post)
                                     true
                                 }
+
                                 R.id.edit -> {
                                     onInteractionListener.onEdit(post)
                                     true
@@ -210,7 +232,7 @@ class PostAdapter(
                 }
                 like.setOnClickListener {
                     onInteractionListener.onLike(post)
-                    if(!authenticated) {
+                    if (!authenticated) {
                         notifyItemChanged(position)
                     }
                 }
@@ -224,7 +246,6 @@ class PostAdapter(
                 }
             }
         }
-
     }
 }
 
@@ -237,5 +258,4 @@ class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
     override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
         return oldItem == newItem
     }
-
 }

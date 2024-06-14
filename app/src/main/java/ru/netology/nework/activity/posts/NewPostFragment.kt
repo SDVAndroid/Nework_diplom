@@ -142,7 +142,10 @@ class NewPostFragment : Fragment(), UserLocationObjectListener, CameraListener {
         }
 
         val postId = arguments?.longArg ?: -1L
-        viewModel.getPostById(postId)
+        if(postId != -1L){
+            viewModel.getPostById(postId)
+        }
+
         viewModel.currentPost.observe(viewLifecycleOwner) {
             it?.let {
                 viewModel.edit(it)
@@ -397,6 +400,14 @@ class NewPostFragment : Fragment(), UserLocationObjectListener, CameraListener {
                         }
                     }
                 }
+            }
+        }
+
+        viewModel.dataState.observe(viewLifecycleOwner){state ->
+            if (state.error) {
+                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG)
+                    .show()
+                viewModel.resetError()
             }
         }
 
