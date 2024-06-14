@@ -174,12 +174,5 @@ interface ApiService {
 
     @DELETE("my/jobs/{id}")
     suspend fun removeJobById(@Path("id") jobId:Long): Response<Unit>
-    // jobs <--
-}
 
-/*
-object Api {
-    val retrofitService: ApiService by lazy {
-        retrofit.create(ApiService::class.java)
-    }
-}*/
+}

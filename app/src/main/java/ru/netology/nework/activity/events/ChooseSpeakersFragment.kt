@@ -14,6 +14,7 @@ import ru.netology.nework.dto.User
 import ru.netology.nework.util.LongArrayArg
 import ru.netology.nework.viewmodel.EventViewModel
 import ru.netology.nework.viewmodel.UserViewModel
+
 @AndroidEntryPoint
 class ChooseSpeakersFragment : Fragment() {
 
@@ -28,19 +29,20 @@ class ChooseSpeakersFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentChooseMentionBinding.inflate(inflater,
+        val binding = FragmentChooseMentionBinding.inflate(
+            inflater,
             container,
             false
         )
         userViewModel.loadUsers()
-        val checkedUsers = arguments?.longArrayArg ?: emptyArray<Long>() as LongArray
+        val checkedUsers = arguments?.longArrayArg ?: arrayOf<Long>().toLongArray()
 
         val adapter = ChooseUserAdapter(
             requireContext(),
             checkedUsers,
             object : OnInteractionListener {
-                override fun onCheck(user: User, isChecked: Boolean) {
-                    if(isChecked){
+                override fun onCheck(user: User, checked: Boolean) {
+                    if (checked) {
                         eventViewModel.chooseUser(user)
                     } else
                         eventViewModel.removeUser(user)

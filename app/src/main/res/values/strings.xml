@@ -69,4 +69,5 @@
     <string name="wrong_format_of_photo">Wrong format of photo</string>
     <string name="task_cancelled">Task cancelled</string>
     <string name="passwords_don_t_match">Passwords don\'t match</string>
+    <string name="looking_for_a_job">looking for a job</string>
 </resources>
