@@ -24,12 +24,15 @@ import java.io.IOException
 abstract class PostRepositoryBaseImpl(
     private val dao: PostDao,
     private val apiService: ApiService,
-): PostRepository {
+) : PostRepository {
 
     abstract override val data: Flow<PagingData<Post>>
 
 
     abstract override suspend fun getAll()
+
+    override fun setUser(userId: Long) {
+    }
 
     override suspend fun save(post: Post) {
         try {
@@ -115,7 +118,7 @@ abstract class PostRepositoryBaseImpl(
         dao.insert(PostEntity.fromDto(post))
     }
 
-    abstract override suspend fun likeById(post: Post) : Post
+    abstract override suspend fun likeById(post: Post): Post
 
     abstract override suspend fun likeByIdLocal(post: Post)
 
@@ -136,10 +139,10 @@ abstract class PostRepositoryBaseImpl(
         }
     }
 
-    override suspend fun getLikersAvatars(post: Post): Set<UserAvatar>{
+    override suspend fun getLikersAvatars(post: Post): Set<UserAvatar> {
         var setAvatars = emptySet<UserAvatar>()
-        if(post.likeOwnerIds.isNotEmpty()){
-            post.likeOwnerIds.forEach{
+        if (post.likeOwnerIds.isNotEmpty()) {
+            post.likeOwnerIds.forEach {
                 setAvatars = setAvatars.plus(UserAvatar(it, getUserAvatar(it)))
             }
         }
@@ -148,8 +151,8 @@ abstract class PostRepositoryBaseImpl(
 
     override suspend fun getMentionedAvatars(post: Post): Set<UserAvatar> {
         var setAvatars = emptySet<UserAvatar>()
-        if(post.mentionIds.isNotEmpty()){
-            post.mentionIds.forEach{
+        if (post.mentionIds.isNotEmpty()) {
+            post.mentionIds.forEach {
                 setAvatars = setAvatars.plus(UserAvatar(it, getUserAvatar(it)))
             }
         }
@@ -158,8 +161,8 @@ abstract class PostRepositoryBaseImpl(
 
     override suspend fun getLikers(post: Post): List<User> {
         var likers = emptyList<User>()
-        if(post.likeOwnerIds.isNotEmpty()){
-            post.likeOwnerIds.forEach{
+        if (post.likeOwnerIds.isNotEmpty()) {
+            post.likeOwnerIds.forEach {
                 likers = likers.plus(getUser(it))
             }
         }
@@ -168,8 +171,8 @@ abstract class PostRepositoryBaseImpl(
 
     override suspend fun getMentioned(post: Post): List<User> {
         var mentioned = emptyList<User>()
-        if(post.mentionIds.isNotEmpty()){
-            post.mentionIds.forEach{
+        if (post.mentionIds.isNotEmpty()) {
+            post.mentionIds.forEach {
                 mentioned = mentioned.plus(getUser(it))
             }
         }
@@ -183,7 +186,7 @@ abstract class PostRepositoryBaseImpl(
                 throw ApiError(response.code(), response.message())
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            if(body.avatar == null){
+            if (body.avatar == null) {
                 return ""
             }
             return body.avatar
@@ -191,6 +194,7 @@ abstract class PostRepositoryBaseImpl(
             throw NetworkError
         }
     }
+
     override suspend fun getUser(userId: Long): User {
         try {
             val response = apiService.getUserById(userId)
@@ -203,7 +207,7 @@ abstract class PostRepositoryBaseImpl(
         }
     }
 
-    override suspend fun getLastJob(userId: Long): Job?{
+    override suspend fun getLastJob(userId: Long): Job? {
         try {
             val response = apiService.getUserJobs(userId)
             if (!response.isSuccessful) {
@@ -214,7 +218,7 @@ abstract class PostRepositoryBaseImpl(
                 .sortedByDescending { it.id }
                 .first()
             return job
-        } catch (e: NoSuchElementException){
+        } catch (e: NoSuchElementException) {
             return null
         } catch (e: IOException) {
             throw NetworkError

@@ -26,35 +26,50 @@ import ru.netology.nework.error.AppError
 import ru.netology.nework.error.NetworkError
 import ru.netology.nework.error.UnknownError
 import java.io.IOException
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PostRepositoryUserWallImpl (
-    appDb: AppDb,
+@Singleton
+class PostRepositoryUserWallImpl @Inject constructor(
+    private val appDb: AppDb,
     private val dao: PostDao,
     private val apiService: ApiService,
     private val auth: AppAuth,
-    private val userId: Long,
-    wallRemoteKeyDao: WallRemoteKeyDao,
-    ) :
+    private val wallRemoteKeyDao: WallRemoteKeyDao,
+) :
     PostRepositoryBaseImpl(dao, apiService) {
+    var userId: Long = 0
+
+    override lateinit var data: Flow<PagingData<Post>>
 
     @OptIn(ExperimentalPagingApi::class)
-    override val data: Flow<PagingData<Post>> = Pager(
-        config = PagingConfig(pageSize = 25),
-        remoteMediator = WallRemoteMediator(apiService, appDb, dao, wallRemoteKeyDao, auth, userId),
-        pagingSourceFactory = {
-            dao.pagingSourceUserWall(userId)
+    override fun setUser(userId: Long) {
+        this.userId = userId
+        data = Pager(
+            config = PagingConfig(pageSize = 25),
+            remoteMediator = WallRemoteMediator(
+                apiService,
+                appDb,
+                dao,
+                wallRemoteKeyDao,
+                auth,
+                userId
+            ),
+            pagingSourceFactory = {
+                dao.pagingSourceUserWall(userId)
+            }
+        ).flow.map { pagingData ->
+            pagingData.map(PostEntity::toDto)
         }
-    ).flow.map { pagingData ->
-        pagingData.map(PostEntity::toDto)
     }
 
 
     override suspend fun getAll() {
         try {
             val response =
-                if(isMyWall()){
+                if (isMyWall()) {
                     apiService.getMyWall()
-                } else{
+                } else {
                     apiService.getUserWall(userId)
                 }
             if (!response.isSuccessful) {
@@ -91,12 +106,12 @@ class PostRepositoryUserWallImpl (
     }
 
     override suspend fun likeByIdLocal(post: Post) {
-        return if(post.likedByMe){
-            val list = post.likeOwnerIds.filter{
+        return if (post.likedByMe) {
+            val list = post.likeOwnerIds.filter {
                 it != auth.authStateFlow.value.id
             }
             dao.likeById(post.id, list)
-        } else{
+        } else {
             val list = post.likeOwnerIds.plus(auth.authStateFlow.value.id)
 
             dao.likeById(post.id, list)
@@ -107,9 +122,9 @@ class PostRepositoryUserWallImpl (
         while (true) {
             delay(10_000L)
             val response =
-                if(isMyWall()){
+                if (isMyWall()) {
                     apiService.getMyWallNewer(id)
-                } else{
+                } else {
                     apiService.getUserWallNewer(userId, id)
                 }
             if (!response.isSuccessful) {
@@ -130,7 +145,7 @@ class PostRepositoryUserWallImpl (
     }
 
 
-    fun isMyWall(): Boolean{
+    fun isMyWall(): Boolean {
         return userId == auth.authStateFlow.value.id
     }
 }
