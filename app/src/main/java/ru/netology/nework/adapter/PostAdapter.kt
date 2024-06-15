@@ -150,6 +150,7 @@ class PostAdapter(
                                     1000
                                 )
                                 audioAttachment.playAudio.setBackgroundResource(R.drawable.pause_48)
+                                mediaLifecycleObserver.seekSet(audioAttachment.seekBar)
                             }
                         }
                     }
