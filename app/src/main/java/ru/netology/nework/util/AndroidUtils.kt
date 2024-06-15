@@ -35,23 +35,23 @@ object AndroidUtils {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun dateUTCToText(dateStr: String, context: Context): String{
+    fun dateUTCToText(dateStr: String, context: Context): String {
         val date = ZonedDateTime.parse(dateStr).withZoneSameInstant(ZoneId.systemDefault())
         return date.format(DateTimeFormatter.ofPattern(context.getString(R.string.date_pattern)))
     }
 
-    fun dateRangeToText(dateStartStr: String, dateEndStr: String?): String{
+    fun dateRangeToText(dateStartStr: String, dateEndStr: String?): String {
         val dateStartRes = dateUTCToLongDateText(dateStartStr)
-        val dateEndRes = if(dateEndStr == null) "НВ" else dateUTCToLongDateText(dateEndStr)
+        val dateEndRes = if (dateEndStr == null) "НВ" else dateUTCToLongDateText(dateEndStr)
         return ("$dateStartRes - $dateEndRes")
     }
 
-    private fun dateUTCToLongDateText(dateStr: String): String{
+    private fun dateUTCToLongDateText(dateStr: String): String {
         val date = ZonedDateTime.parse(dateStr).withZoneSameInstant(ZoneId.systemDefault())
         return date.format(DateTimeFormatter.ofPattern("d MMMM yyyy"))
     }
 
-    fun dateUTCToCalendar(dateStr: String): Calendar{
+    fun dateUTCToCalendar(dateStr: String): Calendar {
         val zonedDateTime = ZonedDateTime.parse(dateStr)
         val date = Date.from(zonedDateTime.toInstant())
         val calendar = Calendar.getInstance()
@@ -60,14 +60,14 @@ object AndroidUtils {
     }
 
     @SuppressLint("SimpleDateFormat")
-    fun calendarToUTCDate(calendar: Calendar): String{
+    fun calendarToUTCDate(calendar: Calendar): String {
         val date = calendar.time
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
         sdf.timeZone = TimeZone.getTimeZone("UTC")
         return sdf.format(date)
     }
 
-    fun share(context: Context, content: String){
+    fun share(context: Context, content: String) {
         val intent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, content)
@@ -79,7 +79,7 @@ object AndroidUtils {
         startActivity(context, shareIntent, null)
     }
 
-    fun showSignInDialog(fragment: Fragment){
+    fun showSignInDialog(fragment: Fragment) {
         val dialog = SignInDialogFragment()
         dialog.show(fragment.parentFragmentManager, fragment.getString(R.string.authentication))
     }
@@ -119,7 +119,7 @@ object AndroidUtils {
         )
     }
 
-    fun addMarkerOnMap(context: Context, mapView: MapView, point: Point): MapObject{
+    fun addMarkerOnMap(context: Context, mapView: MapView, point: Point): MapObject {
         val markerPin = createBitmapFromVector(context, R.drawable.location_pin)
         val marker = mapView.map.mapObjects.addPlacemark(point, ImageProvider.fromBitmap(markerPin))
         marker.opacity = 0.5f // Устанавливаем прозрачность метке

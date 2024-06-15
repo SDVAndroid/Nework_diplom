@@ -26,5 +26,4 @@ interface UserDao {
 
     @Query("SELECT avatar FROM UserEntity where id = :id")
     suspend fun avatar(id: Long): String
-
 }

@@ -10,16 +10,15 @@ import ru.netology.nework.activity.users.UserPostsFragment
 class FragmentPageAdapter(
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle
-): FragmentStateAdapter(fragmentManager, lifecycle) {
+) : FragmentStateAdapter(fragmentManager, lifecycle) {
     override fun getItemCount(): Int {
         return 2
     }
 
     override fun createFragment(position: Int): Fragment {
-        return if(position == 0)
+        return if (position == 0)
             UserPostsFragment()
         else
             UserJobsFragment()
     }
-
 }

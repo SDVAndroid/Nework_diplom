@@ -5,5 +5,4 @@ data class FeedModelState(
     val error: Boolean = false,
     val refreshing: Boolean = false,
     val errorText: String = ""
-
 )

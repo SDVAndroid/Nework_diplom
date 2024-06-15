@@ -20,7 +20,7 @@ interface PostRepository {
     suspend fun likeById(post: Post): Post
     suspend fun likeByIdLocal(post: Post)
     suspend fun removeById(post: Post)
-    suspend fun getUserAvatar(userId: Long):String
+    suspend fun getUserAvatar(userId: Long): String
     suspend fun getLikersAvatars(post: Post): Set<UserAvatar>
     suspend fun getMentionedAvatars(post: Post): Set<UserAvatar>
     suspend fun getUser(userId: Long): User

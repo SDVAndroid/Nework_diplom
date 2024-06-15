@@ -44,25 +44,29 @@ interface EventDao {
     suspend fun save(event: EventEntity) =
         if (event.id == 0L) insert(event) else updateContentById(event.id, event.content)
 
-    @Query("""
+    @Query(
+        """
         UPDATE EventEntity SET
         likes = likes + CASE WHEN likedByMe THEN -1 ELSE 1 END,
         likedByMe = CASE WHEN likedByMe THEN 0 ELSE 1 END,
         likeOwnerIds = :likeOwnerIds
         WHERE id = :id
-        """)
+        """
+    )
     suspend fun likeById(id: Long, likeOwnerIds: List<Long>)
 
     @Query("DELETE FROM EventEntity WHERE id = :id")
     suspend fun removeById(id: Long)
 
-    @Query("""
+    @Query(
+        """
         UPDATE EventEntity SET
         participants = participants + CASE WHEN participatedByMe THEN -1 ELSE 1 END,
         participatedByMe = CASE WHEN participatedByMe THEN 0 ELSE 1 END,
         participantsIds = :participantsIds
         WHERE id = :id
-        """)
+        """
+    )
     suspend fun participateById(id: Long, participantsIds: List<Long>)
 
     @Query("DELETE FROM EventEntity")

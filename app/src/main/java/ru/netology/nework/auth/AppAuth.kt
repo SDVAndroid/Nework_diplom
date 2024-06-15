@@ -28,9 +28,9 @@ class AppAuth @Inject constructor(
         if (id == 0L || token == null) {
             _authStateFlow = MutableStateFlow(AuthState())
             with(prefs.edit()) {
-               clear()
-               apply()
-           }
+                clear()
+                apply()
+            }
         } else {
             _authStateFlow = MutableStateFlow(AuthState(id, token))
         }
@@ -67,8 +67,6 @@ class AppAuth @Inject constructor(
     fun authenticated(): Boolean {
         return _authStateFlow.value.id != 0L
     }
-
-
 }
 
 data class AuthState(val id: Long = 0, val token: String? = null)

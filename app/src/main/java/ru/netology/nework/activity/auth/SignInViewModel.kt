@@ -22,7 +22,6 @@ class SignInViewModel @Inject constructor(
     val login: MutableLiveData<String> = MutableLiveData<String>()
     val pass: MutableLiveData<String> = MutableLiveData<String>()
 
-
     private val _authState = MutableLiveData<AuthState>()
     val authState: LiveData<AuthState>
         get() = _authState
@@ -30,16 +29,16 @@ class SignInViewModel @Inject constructor(
     val userAuthResult: LiveData<UserAuthResult>
         get() = _userAuthResult
 
-    fun signIn() = viewModelScope.launch{
+    fun signIn() = viewModelScope.launch {
         try {
-            val authResult = updateUser(login.value!!.toString().trim(), pass.value!!.toString().trim())
+            val authResult =
+                updateUser(login.value!!.toString().trim(), pass.value!!.toString().trim())
             _authState.value = authResult
             _userAuthResult.value = UserAuthResult()
-        }
-        catch(apiException: ApiError){
-            _userAuthResult.value = UserAuthResult(error = true, "${apiException.status}:${apiException.code}")
-        }
-        catch (e: Exception) {
+        } catch (apiException: ApiError) {
+            _userAuthResult.value =
+                UserAuthResult(error = true, "${apiException.status}:${apiException.code}")
+        } catch (e: Exception) {
             _userAuthResult.value = UserAuthResult(error = true)
         }
     }
@@ -49,7 +48,7 @@ class SignInViewModel @Inject constructor(
             val response = apiService.updateUser(login, pass)
             if (!response.isSuccessful) {
                 var message = ""
-                message = when(response.code()){
+                message = when (response.code()) {
                     400 -> "Wrong password"
                     404 -> "User is not registered"
                     else -> response.message()

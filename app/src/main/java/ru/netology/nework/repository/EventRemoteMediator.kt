@@ -34,6 +34,7 @@ class EventRemoteMediator(
                     )
                     service.getEventsAfter(id, state.config.pageSize)
                 }
+
                 LoadType.APPEND -> {
                     val id = eventRemoteKeyDao.min() ?: return MediatorResult.Success(
                         endOfPaginationReached = false
@@ -68,6 +69,7 @@ class EventRemoteMediator(
                         )
                         eventDao.removeAll()
                     }
+
                     LoadType.PREPEND -> {
                         eventRemoteKeyDao.insert(
                             EventRemoteKeyEntity(
@@ -76,6 +78,7 @@ class EventRemoteMediator(
                             )
                         )
                     }
+
                     LoadType.APPEND -> {
                         eventRemoteKeyDao.insert(
                             EventRemoteKeyEntity(

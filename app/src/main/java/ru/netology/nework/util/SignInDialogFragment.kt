@@ -14,11 +14,13 @@ class SignInDialogFragment : DialogFragment() {
             // Use the Builder class for convenient dialog construction
             val builder = AlertDialog.Builder(it)
             builder.setMessage(getString(R.string.sign_in_dialog))
-                .setPositiveButton(R.string.sign_in
+                .setPositiveButton(
+                    R.string.sign_in
                 ) { _, _ ->
                     findNavController().navigate(R.id.action_global_signInFragment)
                 }
-                .setNegativeButton(getString(R.string.dialog_cancel)
+                .setNegativeButton(
+                    getString(R.string.dialog_cancel)
                 ) { _, _ ->
                     // User cancelled the dialog
                 }

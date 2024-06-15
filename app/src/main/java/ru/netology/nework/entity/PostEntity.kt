@@ -37,7 +37,24 @@ data class PostEntity(
     var attachment: AttachmentEmbeddable?,
     val likes: Int = 0
 ) {
-    fun toDto() = Post(id, authorId, author, authorJob, authorAvatar, coords?.toDto(), content, published, link, mentionIds, mentionedMe, likeOwnerIds, likedByMe,  attachment?.toDto(), emptyMap(), likes = likes)
+    fun toDto() = Post(
+        id,
+        authorId,
+        author,
+        authorJob,
+        authorAvatar,
+        coords?.toDto(),
+        content,
+        published,
+        link,
+        mentionIds,
+        mentionedMe,
+        likeOwnerIds,
+        likedByMe,
+        attachment?.toDto(),
+        emptyMap(),
+        likes = likes
+    )
 
     companion object {
         fun fromDto(dto: Post) =
@@ -85,7 +102,7 @@ data class PostEntity(
 data class PointEmbeddable(
     var latitude: Double,
     var longitude: Double,
-){
+) {
     fun toDto() = Coords(latitude, longitude)
 
     companion object {
@@ -94,6 +111,7 @@ data class PointEmbeddable(
         }
     }
 }
+
 data class AttachmentEmbeddable(
     var url: String,
     var type: AttachmentType,
@@ -106,6 +124,7 @@ data class AttachmentEmbeddable(
         }
     }
 }
+
 fun List<PostEntity>.toDto(): List<Post> = map(PostEntity::toDto)
 fun List<Post>.toEntity(): List<PostEntity> = map(PostEntity.Companion::fromDto)
 fun List<Post>.toEntityNew(): List<PostEntity> = map(PostEntity.Companion::fromDtoNew)

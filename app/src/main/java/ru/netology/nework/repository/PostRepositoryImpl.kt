@@ -36,7 +36,7 @@ open class PostRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val auth: AppAuth,
     postRemoteKeyDao: PostRemoteKeyDao,
-): PostRepositoryBaseImpl(dao, apiService) {
+) : PostRepositoryBaseImpl(dao, apiService) {
 
     @OptIn(ExperimentalPagingApi::class)
     override val data: Flow<PagingData<Post>> = Pager(
@@ -62,16 +62,16 @@ open class PostRepositoryImpl @Inject constructor(
 
     override fun getNewerCount(id: Long): Flow<Int> = flow {
         while (true) {
-                delay(10_000L)
-                val response = apiService.getNewerPosts(id)
-                if (!response.isSuccessful) {
-                    throw ApiError(response.code(), response.message())
-                }
+            delay(10_000L)
+            val response = apiService.getNewerPosts(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
 
-                val body = response.body() ?: throw ApiError(response.code(), response.message())
-                //записываем новые посты с признаком read = false
-                dao.insert(body.toEntityNew())
-                emit(body.size)
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            //записываем новые посты с признаком read = false
+            dao.insert(body.toEntityNew())
+            emit(body.size)
         }
     }
         .catch { e -> throw AppError.from(e) }
@@ -82,7 +82,7 @@ open class PostRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun likeById(post: Post) : Post {
+    override suspend fun likeById(post: Post): Post {
         try {
             likeByIdLocal(post)
             val response = if (!post.likedByMe) {
@@ -104,12 +104,12 @@ open class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun likeByIdLocal(post: Post) {
-        return if(post.likedByMe){
-            val list = post.likeOwnerIds.filter{
+        return if (post.likedByMe) {
+            val list = post.likeOwnerIds.filter {
                 it != auth.authStateFlow.value.id
             }
             dao.likeById(post.id, list)
-        } else{
+        } else {
             val list = post.likeOwnerIds.plus(auth.authStateFlow.value.id)
             dao.likeById(post.id, list)
         }

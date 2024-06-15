@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activity.users.NewJobFragment">
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:orientation="vertical"
->
+        app:layout_constraintTop_toTopOf="parent">
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/common_spacing"
             android:layout_marginStart="@dimen/sign_margin"
+            android:layout_marginTop="@dimen/common_spacing"
             android:layout_marginEnd="@dimen/sign_margin"
             android:hint="@string/name">
 
@@ -32,8 +33,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/common_spacing"
             android:layout_marginStart="@dimen/sign_margin"
+            android:layout_marginTop="@dimen/common_spacing"
             android:layout_marginEnd="@dimen/sign_margin"
             android:hint="@string/position">
 
@@ -47,12 +48,11 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/common_spacing"
             android:layout_marginStart="@dimen/sign_margin"
+            android:layout_marginTop="@dimen/common_spacing"
             android:layout_marginEnd="@dimen/sign_margin"
             android:hint="@string/link"
-            app:layout_constraintStart_toStartOf="parent"
-            >
+            app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/link"
@@ -63,26 +63,26 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/dates"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/common_spacing"
             android:layout_marginStart="@dimen/sign_margin"
-            android:textColor="@color/header_text_color"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            />
+            android:layout_marginTop="@dimen/common_spacing"
+            android:textColor="@color/header_text_color" />
 
 
     </LinearLayout>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/create"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/create"
-        android:textAllCaps="false"
-        app:cornerRadius="100dp"
+        android:layout_gravity="bottom"
         android:layout_marginStart="@dimen/sign_margin"
         android:layout_marginEnd="@dimen/sign_margin"
-        android:layout_gravity="bottom">
+        android:text="@string/create"
+        android:textAllCaps="false"
+        app:cornerRadius="100dp">
 
     </com.google.android.material.button.MaterialButton>
 

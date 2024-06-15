@@ -258,7 +258,7 @@ class PostDetailsFragment : Fragment() {
             }
         }
 
-        postViewModel.dataState.observe(viewLifecycleOwner){state ->
+        postViewModel.dataState.observe(viewLifecycleOwner) { state ->
             if (state.error) {
                 Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG)
                     .show()

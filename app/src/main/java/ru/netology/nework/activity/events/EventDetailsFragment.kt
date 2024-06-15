@@ -60,10 +60,11 @@ class EventDetailsFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    @Deprecated("Deprecated in Java", ReplaceWith(
-        "inflater.inflate(R.menu.menu_details, menu)",
-        "ru.netology.nework.R"
-    )
+    @Deprecated(
+        "Deprecated in Java", ReplaceWith(
+            "inflater.inflate(R.menu.menu_details, menu)",
+            "ru.netology.nework.R"
+        )
     )
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_details, menu)
@@ -78,6 +79,7 @@ class EventDetailsFragment : Fragment() {
                 }
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -97,7 +99,7 @@ class EventDetailsFragment : Fragment() {
         val eventId = arguments?.longArg ?: -1
         eventViewModel.getEventById(eventId)
         eventViewModel.currentEvent.observe(viewLifecycleOwner) { event ->
-            if(event != null) {
+            if (event != null) {
                 eventViewModel.getLastJob(event.authorId)
                 if (event.likeOwnerIds.isNotEmpty()) {
                     if (needLoadLikersAvatars) {
@@ -257,14 +259,14 @@ class EventDetailsFragment : Fragment() {
             }
         }
 
-        eventViewModel.lastJob.observe(viewLifecycleOwner){
-            if(eventViewModel.lastJob.value?.position != null){
+        eventViewModel.lastJob.observe(viewLifecycleOwner) {
+            if (eventViewModel.lastJob.value?.position != null) {
                 binding.job.text = eventViewModel.lastJob.value?.position.toString()
             } else binding.job.text = getString(R.string.looking_for_a_job)
 
         }
 
-        eventViewModel.likersLoaded.observe(viewLifecycleOwner){
+        eventViewModel.likersLoaded.observe(viewLifecycleOwner) {
             eventViewModel.likers.value?.forEach { user ->
                 likerNumber++
                 mapLikers[likerNumber]?.let { imageView ->
@@ -274,7 +276,7 @@ class EventDetailsFragment : Fragment() {
             }
         }
 
-        eventViewModel.speakersLoaded.observe(viewLifecycleOwner){
+        eventViewModel.speakersLoaded.observe(viewLifecycleOwner) {
             eventViewModel.speakers.value?.forEach { user ->
                 speakerNumber++
                 mapSpeakers[speakerNumber]?.let { imageView ->
@@ -284,7 +286,7 @@ class EventDetailsFragment : Fragment() {
             }
         }
 
-        eventViewModel.participantsLoaded.observe(viewLifecycleOwner){
+        eventViewModel.participantsLoaded.observe(viewLifecycleOwner) {
             eventViewModel.participants.value?.forEach { user ->
                 participantNumber++
                 mapParticipants[participantNumber]?.let { imageView ->
@@ -294,7 +296,7 @@ class EventDetailsFragment : Fragment() {
             }
         }
 
-        eventViewModel.dataState.observe(viewLifecycleOwner){state ->
+        eventViewModel.dataState.observe(viewLifecycleOwner) { state ->
             if (state.error) {
                 Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG)
                     .show()
@@ -323,7 +325,8 @@ class EventDetailsFragment : Fragment() {
     private fun moveToMarker(point: Point) {
         AndroidUtils.moveCamera(binding.mapView, point)
     }
-    private fun clearLikersAvatars(){
+
+    private fun clearLikersAvatars() {
         likerNumber = -1
         needLoadLikersAvatars = true
         binding.likersAvatarsNested.avatar1.isVisible = false
@@ -333,7 +336,7 @@ class EventDetailsFragment : Fragment() {
         binding.likersAvatarsNested.avatar5.isVisible = false
     }
 
-    private fun clearSpeakersAvatars(){
+    private fun clearSpeakersAvatars() {
         speakerNumber = -1
         needLoadSpeakersAvatars = true
         binding.speakersAvatarsNested.avatar1.isVisible = false
@@ -343,7 +346,7 @@ class EventDetailsFragment : Fragment() {
         binding.speakersAvatarsNested.avatar5.isVisible = false
     }
 
-    private fun clearParticipantsAvatars(){
+    private fun clearParticipantsAvatars() {
         participantNumber = -1
         needLoadParticipantsAvatars = true
         binding.participantsAvatarsNested.avatar1.isVisible = false
@@ -353,7 +356,7 @@ class EventDetailsFragment : Fragment() {
         binding.participantsAvatarsNested.avatar5.isVisible = false
     }
 
-    private fun fillMaps(){
+    private fun fillMaps() {
         mapLikers[0] = binding.likersAvatarsNested.avatar1
         mapLikers[1] = binding.likersAvatarsNested.avatar2
         mapLikers[2] = binding.likersAvatarsNested.avatar3
@@ -372,7 +375,8 @@ class EventDetailsFragment : Fragment() {
         mapParticipants[3] = binding.participantsAvatarsNested.avatar4
         mapParticipants[4] = binding.participantsAvatarsNested.avatar5
     }
-    private fun loadAvatar(imageView: ImageView, user: User){
+
+    private fun loadAvatar(imageView: ImageView, user: User) {
         Glide.with(imageView)
             .load(user.avatar)
             .placeholder(R.drawable.ic_loading_100dp)

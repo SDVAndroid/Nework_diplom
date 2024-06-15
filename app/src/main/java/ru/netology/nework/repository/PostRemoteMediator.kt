@@ -35,6 +35,7 @@ class PostRemoteMediator @Inject constructor(
                     )
                     service.getPostsAfter(id, state.config.pageSize)
                 }
+
                 LoadType.APPEND -> {
                     val id = postRemoteKeyDao.min() ?: return MediatorResult.Success(
                         endOfPaginationReached = false
@@ -69,6 +70,7 @@ class PostRemoteMediator @Inject constructor(
                         )
                         postDao.removeAll()
                     }
+
                     LoadType.PREPEND -> {
                         postRemoteKeyDao.insert(
                             PostRemoteKeyEntity(
@@ -77,6 +79,7 @@ class PostRemoteMediator @Inject constructor(
                             )
                         )
                     }
+
                     LoadType.APPEND -> {
                         postRemoteKeyDao.insert(
                             PostRemoteKeyEntity(

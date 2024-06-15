@@ -47,7 +47,7 @@ class UserWallFragment : Fragment() {
 
         val navController = findNavController()
 
-        val appBarConfiguration= AppBarConfiguration(navController.graph)
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
 
         setupWithNavController(
             toolbar, navController, appBarConfiguration
@@ -58,7 +58,7 @@ class UserWallFragment : Fragment() {
         userViewModel.selectUser(userId)
         userViewModel.data.observe(viewLifecycleOwner) { users ->
             val user = users.find { it.id == userId }
-            if(user != null){
+            if (user != null) {
                 binding.apply {
                     Glide.with(avatar)
                         .load(user.avatar)
@@ -70,7 +70,7 @@ class UserWallFragment : Fragment() {
                 }
                 collapsingToolbarLayout.isTitleEnabled = true
                 collapsingToolbarLayout.title = "${user.name}/${user.login}"
-        }
+            }
 
         }
         tabLayout = binding.tabs
@@ -80,16 +80,18 @@ class UserWallFragment : Fragment() {
         tabLayout.addTab(tabLayout.newTab().setText("Jobs"))
 
         viewPager2.adapter = adapter
-        TabLayoutMediator(tabLayout, viewPager2){tab, index ->
-            when(index){
+        TabLayoutMediator(tabLayout, viewPager2) { tab, index ->
+            when (index) {
                 0 -> {
                     tab.text = "Wall"
                     binding.fab.visibility = View.GONE
                 }
+
                 1 -> {
                     tab.text = "Jobs"
                     binding.fab.visibility = View.VISIBLE
                 }
+
                 else -> Unit
             }
 
@@ -97,13 +99,16 @@ class UserWallFragment : Fragment() {
         viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                when(position){
+                when (position) {
                     0 -> {
                         binding.fab.visibility = View.GONE
                     }
+
                     1 -> {
-                        binding.fab.visibility = if(userId == auth.authStateFlow.value.id) View.VISIBLE else View.GONE
+                        binding.fab.visibility =
+                            if (userId == auth.authStateFlow.value.id) View.VISIBLE else View.GONE
                     }
+
                     else -> Unit
                 }
             }

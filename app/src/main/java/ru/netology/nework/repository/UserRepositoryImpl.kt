@@ -18,7 +18,7 @@ import javax.inject.Singleton
 class UserRepositoryImpl @Inject constructor(
     private val dao: UserDao,
     private val apiService: ApiService,
-): UserRepository{
+) : UserRepository {
 
     override val data = dao.getAll()
         .map(List<UserEntity>::toDto)

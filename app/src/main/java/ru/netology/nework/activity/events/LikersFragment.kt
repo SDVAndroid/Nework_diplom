@@ -11,6 +11,7 @@ import ru.netology.nework.adapter.OnInteractionListener
 import ru.netology.nework.adapter.UserAdapter
 import ru.netology.nework.databinding.FragmentLikersEventBinding
 import ru.netology.nework.viewmodel.EventViewModel
+
 @AndroidEntryPoint
 class LikersFragment : Fragment() {
 

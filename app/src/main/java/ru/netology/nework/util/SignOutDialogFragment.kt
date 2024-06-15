@@ -21,7 +21,8 @@ class SignOutDialogFragment(val auth: AppAuth) : DialogFragment() {
                     auth.removeAuth()
                     findNavController().navigateUp()
                 }
-                .setNegativeButton(getString(R.string.dialog_cancel)
+                .setNegativeButton(
+                    getString(R.string.dialog_cancel)
                 ) { _, _ ->
                     // User cancelled the dialog
                 }

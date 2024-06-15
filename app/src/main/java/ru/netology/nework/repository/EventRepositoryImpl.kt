@@ -44,7 +44,7 @@ class EventRepositoryImpl @Inject constructor(
     eventRemoteKeyDao: EventRemoteKeyDao,
     private val apiService: ApiService,
     private val auth: AppAuth
-): EventRepository {
+) : EventRepository {
 
     @OptIn(ExperimentalPagingApi::class)
     override val data: Flow<PagingData<Event>> = Pager(
@@ -145,12 +145,12 @@ class EventRepositoryImpl @Inject constructor(
     }
 
     override suspend fun likeByIdLocal(event: Event) {
-        return if(event.likedByMe){
-            val list = event.likeOwnerIds.filter{
+        return if (event.likedByMe) {
+            val list = event.likeOwnerIds.filter {
                 it != auth.authStateFlow.value.id
             }
             dao.likeById(event.id, list)
-        } else{
+        } else {
             val list = event.likeOwnerIds.plus(auth.authStateFlow.value.id)
 
             dao.likeById(event.id, list)
@@ -179,12 +179,12 @@ class EventRepositoryImpl @Inject constructor(
     }
 
     override suspend fun participateByIdLocal(event: Event) {
-        return if(event.participatedByMe){
-            val list = event.participantsIds.filter{
+        return if (event.participatedByMe) {
+            val list = event.participantsIds.filter {
                 it != auth.authStateFlow.value.id
             }
             dao.participateById(event.id, list)
-        } else{
+        } else {
             val list = event.participantsIds.plus(auth.authStateFlow.value.id)
 
             dao.participateById(event.id, list)
@@ -210,8 +210,8 @@ class EventRepositoryImpl @Inject constructor(
 
     override suspend fun getLikers(event: Event): List<User> {
         var likers = emptyList<User>()
-        if(event.likeOwnerIds.isNotEmpty()){
-            event.likeOwnerIds.forEach{
+        if (event.likeOwnerIds.isNotEmpty()) {
+            event.likeOwnerIds.forEach {
                 likers = likers.plus(getUser(it))
             }
         }
@@ -220,8 +220,8 @@ class EventRepositoryImpl @Inject constructor(
 
     override suspend fun getSpeakers(event: Event): List<User> {
         var speakers = emptyList<User>()
-        if(event.speakerIds.isNotEmpty()){
-            event.speakerIds.forEach{
+        if (event.speakerIds.isNotEmpty()) {
+            event.speakerIds.forEach {
                 speakers = speakers.plus(getUser(it))
             }
         }
@@ -230,8 +230,8 @@ class EventRepositoryImpl @Inject constructor(
 
     override suspend fun getParticipants(event: Event): List<User> {
         var participants = emptyList<User>()
-        if(event.participantsIds.isNotEmpty()){
-            event.participantsIds.forEach{
+        if (event.participantsIds.isNotEmpty()) {
+            event.participantsIds.forEach {
                 participants = participants.plus(getUser(it))
             }
         }
@@ -290,10 +290,10 @@ class EventRepositoryImpl @Inject constructor(
         .flowOn(Dispatchers.Default)
 
     override suspend fun latestReadEventId(): Long {
-        return  dao.latestReadEventId() ?: 0L
+        return dao.latestReadEventId() ?: 0L
     }
 
-    override suspend fun getLastJob(userId: Long): Job?{
+    override suspend fun getLastJob(userId: Long): Job? {
         try {
             val response = apiService.getUserJobs(userId)
             if (!response.isSuccessful) {
@@ -304,7 +304,7 @@ class EventRepositoryImpl @Inject constructor(
                 .sortedByDescending { it.id }
                 .first()
             return job
-        } catch (e: NoSuchElementException){
+        } catch (e: NoSuchElementException) {
             return null
         } catch (e: IOException) {
             throw NetworkError

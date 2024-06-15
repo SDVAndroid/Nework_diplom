@@ -77,6 +77,7 @@ class EventViewModel @Inject constructor(
                 }
             }
         }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val newerCount: Flow<Int> = data.flatMapLatest {
         repository.getNewerCount(repository.latestReadEventId())
@@ -383,7 +384,7 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun resetError(){
+    fun resetError() {
         _dataState.value = FeedModelState()
     }
 }

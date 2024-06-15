@@ -112,7 +112,7 @@ class PostsFragment : Fragment() {
             }
         }
 
-        postViewModel.dataState.observe(viewLifecycleOwner){state ->
+        postViewModel.dataState.observe(viewLifecycleOwner) { state ->
             binding.progress.isVisible = state.loading
             if (state.error) {
                 Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG)

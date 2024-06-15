@@ -13,7 +13,8 @@ data class JobEntity(
     val start: String,
     val finish: String?,
     val link: String?,
-    val userId: Long) {
+    val userId: Long
+) {
     fun toDto() = Job(id, name, position, start, finish, link, userId)
 
     companion object {
@@ -29,6 +30,7 @@ data class JobEntity(
             )
     }
 }
+
 fun List<JobEntity>.toDto(): List<Job> = map(JobEntity::toDto)
 fun List<Job>.toEntity(userId: Long): List<JobEntity> {
     return this.map { job ->

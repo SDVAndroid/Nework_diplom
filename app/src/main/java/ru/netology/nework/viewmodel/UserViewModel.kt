@@ -17,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class UserViewModel @Inject constructor(
     private val repository: UserRepository,
-    application: Application) : AndroidViewModel(application){
+    application: Application
+) : AndroidViewModel(application) {
 
     val data: LiveData<List<User>> = repository.data
         .asLiveData(Dispatchers.Default)
@@ -32,7 +33,7 @@ class UserViewModel @Inject constructor(
         loadUsers()
     }
 
-    fun loadUsers()  = viewModelScope.launch {
+    fun loadUsers() = viewModelScope.launch {
         try {
             _dataState.value = FeedModelState(loading = true)
             repository.getAll()
@@ -42,7 +43,7 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun selectUser(userId: Long){
+    fun selectUser(userId: Long) {
         selectedUser.value = userId
     }
 

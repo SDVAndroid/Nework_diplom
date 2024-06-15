@@ -22,6 +22,7 @@ import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentSignUpBinding
 import ru.netology.nework.util.AndroidUtils
 import javax.inject.Inject
+
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
     @Inject
@@ -35,16 +36,17 @@ class SignUpFragment : Fragment() {
     ): View {
         binding = FragmentSignUpBinding.inflate(inflater, container, false)
 
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-            when(it.resultCode){
-                ImagePicker.RESULT_ERROR ->{
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            when (it.resultCode) {
+                ImagePicker.RESULT_ERROR -> {
                     Snackbar.make(
                         binding.root,
                         ImagePicker.getError(it.data),
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
-                Activity.RESULT_OK ->{
+
+                Activity.RESULT_OK -> {
                     val uri: Uri? = it.data?.data
                     viewModel.changePhoto(uri, uri?.toFile())
                 }
@@ -62,7 +64,6 @@ class SignUpFragment : Fragment() {
                     )
                 )
                 .start(20)
-
         }
 
         viewModel.photo.observe(viewLifecycleOwner) {
@@ -71,32 +72,33 @@ class SignUpFragment : Fragment() {
         }
 
         enableLogin()
-        binding.name.doOnTextChanged{text, start, before, count ->
+        binding.name.doOnTextChanged { text, start, before, count ->
             enableLogin()
         }
-        binding.login.doOnTextChanged{text, start, before, count ->
+        binding.login.doOnTextChanged { text, start, before, count ->
             enableLogin()
         }
 
-        binding.pass.doOnTextChanged{text, start, before, count ->
+        binding.pass.doOnTextChanged { text, start, before, count ->
             enableLogin()
         }
-        binding.passRepeat.doOnTextChanged{text, start, before, count ->
+        binding.passRepeat.doOnTextChanged { text, start, before, count ->
             enableLogin()
         }
 
         binding.signUp.setOnClickListener {
             AndroidUtils.hideKeyboard(requireView())
             if (binding.pass.text.toString() != binding.passRepeat.text.toString()) {
-                Snackbar.make(binding.root,
-                    getString(R.string.passwords_don_t_match), Snackbar.LENGTH_LONG).show()
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.passwords_don_t_match), Snackbar.LENGTH_LONG
+                ).show()
             } else {
                 viewModel.name.value = binding.name.text.toString()
                 viewModel.login.value = binding.login.text.toString()
                 viewModel.pass.value = binding.pass.text.toString()
                 viewModel.signUp()
             }
-
         }
 
         viewModel.authState.observe(viewLifecycleOwner) { state ->
@@ -113,13 +115,14 @@ class SignUpFragment : Fragment() {
         return binding.root
     }
 
-    private fun enableLogin(){
+    private fun enableLogin() {
         binding.signUp.isEnabled = binding.name.text.toString().isNotEmpty() &&
                 binding.login.text.toString().isNotEmpty() &&
                 binding.pass.text.toString().isNotEmpty() &&
                 binding.passRepeat.text.toString().isNotEmpty()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (resultCode) {
@@ -128,11 +131,18 @@ class SignUpFragment : Fragment() {
                 viewModel.changePhoto(uri, uri.toFile())
                 binding.photo.setImageURI(uri)
             }
+
             ImagePicker.RESULT_ERROR -> {
-                Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT)
+                    .show()
             }
+
             else -> {
-                Toast.makeText(requireContext(), getString(R.string.task_cancelled), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.task_cancelled),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

@@ -17,6 +17,7 @@ import ru.netology.nework.adapter.UserAdapter
 import ru.netology.nework.databinding.FragmentUsersBinding
 import ru.netology.nework.dto.User
 import ru.netology.nework.viewmodel.UserViewModel
+
 @AndroidEntryPoint
 class UsersFragment : Fragment() {
 
@@ -32,7 +33,7 @@ class UsersFragment : Fragment() {
             override fun onUserClick(user: User) {
                 findNavController().navigate(
                     R.id.action_usersFragment_to_userWallFragment,
-                    Bundle().apply{
+                    Bundle().apply {
                         longArg = user.id
                     })
             }

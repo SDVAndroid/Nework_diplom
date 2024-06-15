@@ -15,7 +15,12 @@ interface EventRepository {
 
     suspend fun getAll()
     suspend fun save(event: Event)
-    suspend fun saveWithAttachment(event: Event, upload: MediaUpload, attachmentType: AttachmentType)
+    suspend fun saveWithAttachment(
+        event: Event,
+        upload: MediaUpload,
+        attachmentType: AttachmentType
+    )
+
     suspend fun saveLocal(event: Event)
     suspend fun getEventById(eventId: Long): Event
     suspend fun likeById(event: Event): Event

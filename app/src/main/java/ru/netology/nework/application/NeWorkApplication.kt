@@ -13,7 +13,6 @@ class NeWorkApplication : Application() {
     lateinit var auth: AppAuth
     override fun onCreate() {
         super.onCreate()
-        //AppAuth.initApp(this)
         MapKitFactory.setApiKey(BuildConfig.MAP_KEY)
     }
 }

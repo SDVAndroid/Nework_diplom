@@ -125,7 +125,7 @@ class EventsFragment : Fragment() {
             binding.list.smoothScrollToPosition(0)
         }
 
-        eventViewModel.dataState.observe(viewLifecycleOwner){state ->
+        eventViewModel.dataState.observe(viewLifecycleOwner) { state ->
             if (state.error) {
                 Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG)
                     .show()

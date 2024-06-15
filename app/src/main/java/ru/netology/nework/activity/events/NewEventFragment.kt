@@ -378,11 +378,13 @@ class NewEventFragment : Fragment(), UserLocationObjectListener, CameraListener 
                 ).format(calendar.time)
             )
             datePicker.setOnClickListener {
-                val datePickerDialog = DatePickerDialog(requireContext(),
+                val datePickerDialog = DatePickerDialog(
+                    requireContext(),
                     R.style.dialog,
                     { _, year, month, day ->
                         calendar.set(year, month, day)
-                        val timePicker = TimePickerDialog(requireContext(),
+                        val timePicker = TimePickerDialog(
+                            requireContext(),
                             R.style.dialog,
                             { _, hour, minute ->
                                 calendar.set(Calendar.HOUR_OF_DAY, hour)
@@ -488,7 +490,7 @@ class NewEventFragment : Fragment(), UserLocationObjectListener, CameraListener 
             }
         }
 
-        viewModel.dataState.observe(viewLifecycleOwner){state ->
+        viewModel.dataState.observe(viewLifecycleOwner) { state ->
             if (state.error) {
                 Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG)
                     .show()

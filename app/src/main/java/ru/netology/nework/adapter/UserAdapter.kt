@@ -12,13 +12,17 @@ import ru.netology.nework.databinding.CardUserBinding
 import ru.netology.nework.dto.User
 
 
-class UserAdapter(private val onInteractionListener: OnInteractionListener, private val context: Context) : ListAdapter<User, UserViewHolder>(UserDiffCallback()){
+class UserAdapter(
+    private val onInteractionListener: OnInteractionListener,
+    private val context: Context
+) : ListAdapter<User, UserViewHolder>(UserDiffCallback()) {
 
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = getItem(position)
         holder.bind(user)
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return UserViewHolder(

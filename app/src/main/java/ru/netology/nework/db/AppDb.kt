@@ -21,15 +21,17 @@ import ru.netology.nework.entity.PostRemoteKeyEntity
 import ru.netology.nework.entity.UserEntity
 import ru.netology.nework.entity.WallRemoteKeyEntity
 
-@Database(entities = [
-    PostEntity::class,
-    PostRemoteKeyEntity::class,
-    WallRemoteKeyEntity::class,
-    EventEntity::class,
-    EventRemoteKeyEntity::class,
-    UserEntity::class,
-    JobEntity::class
-                     ], version = 1)
+@Database(
+    entities = [
+        PostEntity::class,
+        PostRemoteKeyEntity::class,
+        WallRemoteKeyEntity::class,
+        EventEntity::class,
+        EventRemoteKeyEntity::class,
+        UserEntity::class,
+        JobEntity::class
+    ], version = 1
+)
 @TypeConverters(Converters::class)
 abstract class AppDb : RoomDatabase() {
     abstract fun postDao(): PostDao
@@ -39,6 +41,7 @@ abstract class AppDb : RoomDatabase() {
     abstract fun eventRemoteKeyDao(): EventRemoteKeyDao
     abstract fun userDao(): UserDao
     abstract fun jobDao(): JobDao
+
     companion object {
         @Volatile
         private var instance: AppDb? = null

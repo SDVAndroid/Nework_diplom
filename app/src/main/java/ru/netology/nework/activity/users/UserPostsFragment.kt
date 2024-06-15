@@ -31,11 +31,13 @@ import ru.netology.nework.util.MediaLifecycleObserver
 import ru.netology.nework.viewmodel.UserViewModel
 import ru.netology.nework.viewmodel.WallViewModel
 import javax.inject.Inject
+
 @AndroidEntryPoint
 class UserPostsFragment : Fragment() {
     @Inject
     lateinit var auth: AppAuth
     private val userViewModel: UserViewModel by viewModels(ownerProducer = ::requireActivity)
+
     @Inject
     lateinit var factory: WallViewModel.Factory
 
@@ -43,7 +45,7 @@ class UserPostsFragment : Fragment() {
         WallViewModel.provideWallViewModelFactory(
             factory,
             userViewModel.selectedUser.value!!
-            )
+        )
     }
     private lateinit var binding: FragmentUserPostsBinding
     private val mediaObserver = MediaLifecycleObserver()
@@ -65,7 +67,7 @@ class UserPostsFragment : Fragment() {
             }
 
             override fun onLike(post: Post) {
-                if(auth.authenticated()){
+                if (auth.authenticated()) {
                     wallViewModel.likeById(post)
                 } else AndroidUtils.showSignInDialog(this@UserPostsFragment)
             }
@@ -117,7 +119,7 @@ class UserPostsFragment : Fragment() {
             }
         }
 
-        wallViewModel.dataState.observe(viewLifecycleOwner){state ->
+        wallViewModel.dataState.observe(viewLifecycleOwner) { state ->
             if (state.error) {
                 Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG)
                     .show()

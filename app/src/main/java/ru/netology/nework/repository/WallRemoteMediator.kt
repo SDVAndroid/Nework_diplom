@@ -32,29 +32,31 @@ class WallRemoteMediator @Inject constructor(
         try {
             val response = when (loadType) {
                 LoadType.REFRESH -> {
-                    if(isMe()) {
+                    if (isMe()) {
                         service.getMyWallLatest(state.config.initialLoadSize)
-                    } else{
+                    } else {
                         service.getUserWallLatest(userId, state.config.initialLoadSize)
                     }
                 }
+
                 LoadType.PREPEND -> {
                     val id = wallRemoteKeyDao.max(userId) ?: return MediatorResult.Success(
                         endOfPaginationReached = false
                     )
-                    if(isMe()) {
+                    if (isMe()) {
                         service.getMyWallAfter(id, state.config.pageSize)
-                    } else{
+                    } else {
                         service.getUserWallAfter(userId, id, state.config.pageSize)
                     }
                 }
+
                 LoadType.APPEND -> {
                     val id = wallRemoteKeyDao.min(userId) ?: return MediatorResult.Success(
                         endOfPaginationReached = false
                     )
-                    if(isMe()){
+                    if (isMe()) {
                         service.getMyWallBefore(id, state.config.pageSize)
-                    } else{
+                    } else {
                         service.getUserWallBefore(userId, id, state.config.pageSize)
                     }
 
@@ -89,6 +91,7 @@ class WallRemoteMediator @Inject constructor(
                         )
                         postDao.removeAll()
                     }
+
                     LoadType.PREPEND -> {
                         wallRemoteKeyDao.insert(
                             WallRemoteKeyEntity(
@@ -98,6 +101,7 @@ class WallRemoteMediator @Inject constructor(
                             )
                         )
                     }
+
                     LoadType.APPEND -> {
                         wallRemoteKeyDao.insert(
                             WallRemoteKeyEntity(
@@ -115,7 +119,8 @@ class WallRemoteMediator @Inject constructor(
             return MediatorResult.Error(e)
         }
     }
-    fun isMe(): Boolean{
+
+    fun isMe(): Boolean {
         return userId == auth.authStateFlow.value.id
     }
 }
